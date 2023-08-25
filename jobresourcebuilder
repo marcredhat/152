@@ -1,0 +1,88 @@
+apiVersion: v1
+items:
+- apiVersion: batch/v1
+  kind: Job
+  metadata:
+    annotations:
+      batch.kubernetes.io/job-tracking: ""
+    creationTimestamp: "2023-08-25T02:03:07Z"
+    generation: 1
+    labels:
+      cde-job-type: resource-builder
+      cde-resource-name: example-virtual-env
+      cde-resource-signature: 6481d4287240b3f1d7953dfea5fbb42fdd48dd7a
+      cde-resource-type: python-env
+    name: ex-app-8b8kgnt4-resource-builder-example-virtual-env-1692928987
+    namespace: dex-app-8b8kgnt4
+    resourceVersion: "26831114"
+    uid: e6519bb7-a2ef-4868-97ea-cbe58cc3cec2
+  spec:
+    activeDeadlineSeconds: 18000
+    backoffLimit: 2
+    completionMode: NonIndexed
+    completions: 1
+    parallelism: 1
+    selector:
+      matchLabels:
+    suspend: false
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          cde-job-type: resource-builder
+          cde-resource-name: example-virtual-env
+          cde-resource-signature: 6481d4287240b3f1d7953dfea5fbb42fdd48dd7a
+          cde-resource-type: python-env
+          job-name: ex-app-8b8kgnt4-resource-builder-example-virtual-env-1692928987
+      spec:
+        containers:
+        - env:
+          - name: DEX_PYTHON_VENV_PATH
+            value: /app/dex/storage/resources/example-virtual-env/python-virtual-environment
+          - name: DEX_PYTHON_REQUIREMENTS_PATH
+            value: /app/dex/storage/resources/example-virtual-env/requirements.txt
+          - name: DEX_PYTHON_DESCRIBE_RESOURCE_URL
+            value: http://dex-app-8b8kgnt4-api.dex-app-8b8kgnt4.svc:9090/api/v1/resources/example-virtual-env
+          envFrom:
+          - configMapRef:
+              name: cdp-proxy-config
+              optional: true
+          image: ip-10-10-85-187.us-west-2.compute.internal:9999/152/cloudera/dex/dex-runtime-python-builder:1.20.0-b297
+          imagePullPolicy: IfNotPresent
+          imagePullSecrets: regcred
+          name: dex-app-resource-builder
+          resources:
+            limits:
+              cpu: "2"
+              memory: 4Gi
+            requests:
+              cpu: "1"
+              memory: 2Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /app/dex/storage/resources/example-virtual-env
+            name: pyenv-storage-vol
+            subPath: resources/example-virtual-env
+        dnsPolicy: ClusterFirst
+        imagePullSecrets:
+         - name: regcred
+        priorityClassName: dex-base-wbvzv9p8-service-pc
+        restartPolicy: Never
+        schedulerName: default-scheduler
+        securityContext: {}
+        serviceAccount: dex-app-8b8kgnt4-resource-builder
+        serviceAccountName: dex-app-8b8kgnt4-resource-builder
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: pyenv-storage-vol
+          persistentVolumeClaim:
+            claimName: dex-app-8b8kgnt4-storage-pvc
+  status:
+    active: 1
+    ready: 0
+    startTime: "2023-08-25T02:03:07Z"
+    uncountedTerminatedPods: {}
+kind: List
+metadata:
+  resourceVersion: ""
